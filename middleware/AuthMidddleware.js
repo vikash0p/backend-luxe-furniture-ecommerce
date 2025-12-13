@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { envConfig } from "../config/env.js";
 export const AuthMiddleware = async (req, res, next) => {
     try {
         // Log the cookies to check if they're being parsed
@@ -10,7 +11,7 @@ export const AuthMiddleware = async (req, res, next) => {
         }
 
         // Verify the token
-        const decoded = jwt.verify(token, process.env.JWT_TOKEN);
+        const decoded = jwt.verify(token, envConfig.jwtSecret);
         console.log("🚀 ~ file: AuthMidddleware.js:14 ~ decoded:", decoded);
         req.user = decoded; // Attach decoded token to request
 

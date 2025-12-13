@@ -1,28 +1,51 @@
 import User from "../models/userSchema.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { envConfig } from "../../config/env.js";
+import { createCookieOptions } from "../../utils/cookie.utils.js";
+
+
+
+
 
 export const RegisterUser = async (req, res) => {
     const { name, email, password, phone } = req.body;
-    try {
 
-        const existingUser = await User.findOne({ email, phone });
+    try {
+        const existingUser = await User.findOne({
+            $or: [{ email }, { phone }],
+        });
+
         if (existingUser) {
-            return res.status(400).json({ message: "User already exists", success: false });
+            return res.status(400).json({
+                success: false,
+                message: "User already exists",
+            });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = { name, email, password: hashedPassword, phone };
 
-        const result = await User.create(user);
-        res.status(201).json({ message: "User created successfully", success: true, result });
+        const createdUser = await User.create({
+            name,
+            email,
+            password: hashedPassword,
+            phone,
+        });
 
+        const result = await User.findById(createdUser._id).select("-password");
+
+        return res.status(201).json({
+            success: true,
+            message: "User created successfully",
+            result,
+        });
     } catch (error) {
-
-        res.json({ message: error.message, success: false });
-
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+        });
     }
-}
+};
 
 export const LoginUser = async (req, res) => {
     const { email, password } = req.body;
@@ -33,18 +56,12 @@ export const LoginUser = async (req, res) => {
     if (!isPasswordCorrect) return res.status(400).json({ message: "Invalid credentials" });
 
     if (user && isPasswordCorrect) {
+        const token = jwt.sign({ id: user._id }, envConfig.jwtSecret, { expiresIn: "365d" });
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_TOKEN, { expiresIn: 60 * 60 * 24 * 365 });
+        const cookieOptions = createCookieOptions();
+        cookieOptions.expires = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000);
 
-        res.cookie("token", token, {
-            path: '/',
-            expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
-            httpOnly: true,
-            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-            secure: process.env.NODE_ENV === 'production', // Only secure in production
-
-        });
-
+        res.cookie("token", token, cookieOptions);
         res.status(200).json({ message: "Login successful", token, success: true });
     } else {
         res.status(401).json({ message: "Invalid credentials", success: false });
@@ -52,13 +69,10 @@ export const LoginUser = async (req, res) => {
 }
 export const LogoutUser = (req, res) => {
     try {
-        res.clearCookie("token", {
-            httpOnly: true,
-            sameSite: "none",
-            secure: process.env.NODE_ENV === "production",
-            path: "/", // Ensure it clears across all paths
-            domain: process.env.COOKIE_DOMAIN || undefined, // Set this if using a specific domain
-        });
+        const cookieOptions = createCookieOptions();
+
+        res.cookie("token", "", { ...cookieOptions, expires: new Date(0) });
+        res.clearCookie("token", cookieOptions);
 
         res.status(200).json({ message: "Logout successful", success: true });
     } catch (error) {
