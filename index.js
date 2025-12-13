@@ -14,6 +14,7 @@ import wishlistRouter from "./mvc/routes/wishlistRouter.js";
 import salesRouter from "./mvc/routes/salesRouter.js";
 import addressRouter from "./mvc/routes/addressRouter.js";
 import orderRouter from "./mvc/routes/orderRouter.js";
+import favicon from "serve-favicon";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -24,7 +25,7 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 5000;
 
-
+app.use(favicon(path.join(process.cwd(), "public", "favicon.ico")));
 // Middleware
 app.use(express.static('public'));
 app.use(express.json());
@@ -61,7 +62,6 @@ app.use('/order', orderRouter)
 app.get('/', (req, res) => {
     res.render('index');
 });
-console.log(app.get('views'));
 
 
 // Error handling for unhandled routes

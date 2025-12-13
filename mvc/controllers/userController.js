@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import User from "../models/userSchema.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -14,6 +13,7 @@ export const RegisterUser = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = { name, email, password: hashedPassword, phone };
+
         const result = await User.create(user);
         res.status(201).json({ message: "User created successfully", success: true, result });
 
@@ -34,11 +34,11 @@ export const LoginUser = async (req, res) => {
 
     if (user && isPasswordCorrect) {
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_TOKEN, { expiresIn: "7d" });
+        const token = jwt.sign({ id: user._id }, process.env.JWT_TOKEN, { expiresIn: 60 * 60 * 24 * 365 });
 
         res.cookie("token", token, {
             path: '/',
-            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+            expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
             httpOnly: true,
             sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
             secure: process.env.NODE_ENV === 'production', // Only secure in production
