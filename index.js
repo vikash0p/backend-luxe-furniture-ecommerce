@@ -6,7 +6,7 @@ import routes from "./mvc/routes/index.js";
 import { baseMiddleware } from "./middleware/base.middleware.js";
 import { envConfig } from "./config/env.js";
 import { corsMiddleware } from "./middleware/cors.middleware.js";
-
+import { log } from "./utils/logger.js";
 
 const app = express();
 
@@ -40,10 +40,10 @@ const startServer = async () => {
     try {
         await connectDB();
         app.listen(envConfig.port, () => {
-            console.log(`🆗 Server running at http://localhost:${envConfig.port}`);
+            log.success(`Server running at http://localhost:${envConfig.port}`,'INDEX');
         });
     } catch (error) {
-        console.error("DB connection error:", error.message);
+        log.error("DB connection error:", error.message, 'INDEX');
         process.exit(1);
     }
 };

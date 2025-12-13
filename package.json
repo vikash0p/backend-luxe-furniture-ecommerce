@@ -1,42 +1,48 @@
 {
-  "name": "furniture",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js",
-    "start": "node index.js"
-  },
-  "engines": {
-    "node": "20.11.0"
-  },
-  "keywords": [
-    "Modern Furniture",
-    "Affordable Furniture",
-    "Luxury Furniture",
-    "Custom-Made Furniture",
-    "Eco-Friendly Furniture",
-    "Living Room Furniture",
-    "Bedroom Furniture",
-    "Outdoor Furniture",
-    "Office Furniture",
-    "Furniture Store Near Me"
-  ],
-  "author": "vikash pandat",
-  "license": "ISC",
-  "description": "Discover a wide range of stylish, high-quality furniture designed to enhance every space in your home or office. From modern and affordable options to luxurious custom-made pieces, our collection includes eco-friendly designs, living room essentials, bedroom comfort, and outdoor durability. Whether you're searching for unique designs or simply the perfect addition to your space, we offer furniture that combines functionality and aesthetics to meet all your needs.",
-  "type": "module",
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "body-parser": "^1.20.3",
-    "cookie-parser": "^1.4.7",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "ejs": "^3.1.10",
-    "express": "^4.21.1",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.8.0",
-    "morgan": "^1.10.0",
-    "serve-favicon": "^2.5.1"
-  }
+	"name": "furniture",
+	"version": "1.0.0",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"dev": "nodemon index.js",
+		"start": "node index.js"
+	},
+	"engines": {
+		"node": "20.11.0"
+	},
+	"keywords": [
+		"Modern Furniture",
+		"Affordable Furniture",
+		"Luxury Furniture",
+		"Custom-Made Furniture",
+		"Eco-Friendly Furniture",
+		"Living Room Furniture",
+		"Bedroom Furniture",
+		"Outdoor Furniture",
+		"Office Furniture",
+		"Furniture Store Near Me"
+	],
+	"author": "vikash pandat",
+	"license": "ISC",
+	"description": "Stylish, high-quality furniture for every space. From modern essentials to custom luxury pieces, designed for comfort, durability, and timeless aesthetics.",
+	"type": "module",
+	"dependencies": {
+		"bcryptjs": "^2.4.3",
+		"body-parser": "^1.20.4",
+		"colors": "^1.4.0",
+		"compression": "^1.8.1",
+		"cookie-parser": "^1.4.7",
+		"cors": "^2.8.5",
+		"dotenv": "^16.4.5",
+		"ejs": "^3.1.10",
+		"express": "^4.21.1",
+		"express-mongo-sanitize": "^2.2.0",
+		"express-rate-limit": "^8.2.1",
+		"helmet": "^8.1.0",
+		"jsonwebtoken": "^9.0.2",
+		"mongoose": "^8.8.0",
+		"morgan": "^1.10.0",
+		"serve-favicon": "^2.5.1",
+		"xss-clean": "^0.1.4"
+	}
 }
