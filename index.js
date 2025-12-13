@@ -4,8 +4,8 @@ import { fileURLToPath } from "url";
 import connectDB from "./utils/dbConnection.js";
 import routes from "./mvc/routes/index.js";
 import { baseMiddleware } from "./middleware/base.middleware.js";
-import { corsMiddleware } from "./middleware/cors.middleware.js";
 import { envConfig } from "./config/env.js";
+import { corsMiddleware } from "./middleware/cors.middleware.js";
 
 
 const app = express();
@@ -15,7 +15,7 @@ const __dirname = path.dirname(__filename);
 
 // Middlewares
 baseMiddleware(app);
-app.use(corsMiddleware);
+app.use(corsMiddleware());
 
 
 // View engine
